@@ -14,7 +14,8 @@ public class AdminController {
     private final UserService users;
     private final RoleRepository roles;
     public AdminController(UserService users, RoleRepository roles) {
-        this.users = users; this.roles = roles;
+        this.users = users;
+        this.roles = roles;
     }
     @GetMapping
     public String list(Model model, @org.springframework.security.core.annotation.AuthenticationPrincipal User currentUser) {
@@ -24,14 +25,18 @@ public class AdminController {
         return "admin";
     }
     @GetMapping("/new")
-    public String add() { return "redirect:/admin#new-user"; }
+    public String add() {
+        return "redirect:/admin#new-user";
+    }
     @PostMapping("/create")
     public String create(@ModelAttribute User user, @RequestParam Set<Long> roleIds) {
         users.create(user, roleIds);
         return "redirect:/admin";
     }
     @GetMapping("/{id}/edit")
-    public String edit(@PathVariable Long id) { return "redirect:/admin#edit-" + id; }
+    public String edit(@PathVariable Long id) {
+        return "redirect:/admin#edit-" + id;
+    }
     @PostMapping("/{id}/update")
     public String update(@PathVariable Long id, @ModelAttribute User user, @RequestParam Set<Long> roleIds) {
         users.update(id, user, roleIds);

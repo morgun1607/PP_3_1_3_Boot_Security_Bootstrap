@@ -20,10 +20,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         this.successUserHandler = successUserHandler;
         this.passwordEncoder = passwordEncoder;
     }
-    @Override protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+    @Override
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(userService).passwordEncoder(passwordEncoder);
     }
-    @Override protected void configure(HttpSecurity http) throws Exception {
+    @Override
+    protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
             .antMatchers("/", "/login", "/css/**", "/error").permitAll()
             .antMatchers("/admin", "/admin/**").hasRole("ADMIN")

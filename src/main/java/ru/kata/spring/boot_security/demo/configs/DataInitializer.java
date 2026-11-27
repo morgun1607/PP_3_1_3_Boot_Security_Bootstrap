@@ -5,7 +5,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import ru.kata.spring.boot_security.demo.dao.UserDao;
+import ru.kata.spring.boot_security.demo.repository.UserRepository;
 import ru.kata.spring.boot_security.demo.model.Role;
 import ru.kata.spring.boot_security.demo.model.User;
 import ru.kata.spring.boot_security.demo.repository.RoleRepository;
@@ -15,7 +15,7 @@ import java.util.Collections;
 @Configuration
 public class DataInitializer {
     @Bean
-    CommandLineRunner initializeUsers(RoleRepository roles, UserDao users, PasswordEncoder encoder,
+    CommandLineRunner initializeUsers(RoleRepository roles, UserRepository users, PasswordEncoder encoder,
             TransactionTemplate tx,
             @Value("${app.admin.password:}") String adminPassword,
             @Value("${app.user.password:}") String userPassword) {

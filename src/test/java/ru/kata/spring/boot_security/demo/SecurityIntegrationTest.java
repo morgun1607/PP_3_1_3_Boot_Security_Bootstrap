@@ -27,7 +27,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
         "app.user.password=integration-user-pass"
 })
 class SecurityIntegrationTest {
-    @Autowired private MockMvc mvc;
+    @Autowired
+    private MockMvc mvc;
 
     private MockHttpSession login(String email, String password) throws Exception {
         return (MockHttpSession) mvc.perform(formLogin().user(email).password(password))
@@ -35,14 +36,16 @@ class SecurityIntegrationTest {
                 .andReturn().getRequest().getSession(false);
     }
 
-    @Test void anonymousCannotAccessProtectedPages() throws Exception {
+    @Test
+    void anonymousCannotAccessProtectedPages() throws Exception {
         mvc.perform(get("/admin")).andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrlPattern("**/login"));
         mvc.perform(get("/user")).andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrlPattern("**/login"));
     }
 
-    @Test void regularUserIsRedirectedAndDeniedAdminAccess() throws Exception {
+    @Test
+    void regularUserIsRedirectedAndDeniedAdminAccess() throws Exception {
         mvc.perform(formLogin().user("user@example.com").password("integration-user-pass"))
                 .andExpect(status().is3xxRedirection()).andExpect(redirectedUrl("/user"));
         MockHttpSession session = login("user@example.com", "integration-user-pass");
@@ -54,7 +57,8 @@ class SecurityIntegrationTest {
                 .andExpect(status().isForbidden());
     }
 
-    @Test void adminWithBothRolesCanSeeAdminAndOwnProfile() throws Exception {
+    @Test
+    void adminWithBothRolesCanSeeAdminAndOwnProfile() throws Exception {
         mvc.perform(formLogin().user("admin@example.com").password("integration-admin-pass"))
                 .andExpect(status().is3xxRedirection()).andExpect(redirectedUrl("/admin"));
         MockHttpSession session = login("admin@example.com", "integration-admin-pass");
@@ -64,7 +68,8 @@ class SecurityIntegrationTest {
                 .andExpect(content().string(org.hamcrest.Matchers.containsString("admin@example.com")));
     }
 
-    @Test void csrfIsRequiredForMutationsAndLogoutWorks() throws Exception {
+    @Test
+    void csrfIsRequiredForMutationsAndLogoutWorks() throws Exception {
         MockHttpSession session = login("admin@example.com", "integration-admin-pass");
         mvc.perform(post("/admin/1/delete").session(session)).andExpect(status().isForbidden());
         mvc.perform(post("/logout").with(csrf()).session(session))
@@ -73,7 +78,8 @@ class SecurityIntegrationTest {
         mvc.perform(get("/admin")).andExpect(status().is3xxRedirection());
     }
 
-    @Test void adminCanCreateAndUpdateUsers() throws Exception {
+    @Test
+    void adminCanCreateAndUpdateUsers() throws Exception {
         MockHttpSession session = login("admin@example.com", "integration-admin-pass");
         mvc.perform(post("/admin/create").session(session).with(csrf())
                         .param("name", "Test").param("lastName", "Person")

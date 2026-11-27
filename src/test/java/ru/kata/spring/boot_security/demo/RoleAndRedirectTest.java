@@ -13,14 +13,16 @@ import java.util.HashSet;
 import static org.junit.jupiter.api.Assertions.*;
 
 class RoleAndRedirectTest {
-    @Test void userDetailsExposesEmailAndRoles() {
+    @Test
+    void userDetailsExposesEmailAndRoles() {
         User user = new User("A", "B", "test@example.com", "hash");
         user.setRoles(new HashSet<>(Collections.singleton(new Role("ROLE_USER"))));
         assertEquals("test@example.com", user.getUsername());
         assertEquals(1, user.getAuthorities().size());
         assertEquals("ROLE_USER", user.getAuthorities().iterator().next().getAuthority());
     }
-    @Test void adminWinsWhenUserHasMultipleRoles() throws Exception {
+    @Test
+    void adminWinsWhenUserHasMultipleRoles() throws Exception {
         SuccessUserHandler handler = new SuccessUserHandler();
         MockHttpServletRequest request = new MockHttpServletRequest();
         MockHttpServletResponse response = new MockHttpServletResponse();
@@ -28,7 +30,8 @@ class RoleAndRedirectTest {
                 "admin", "hidden", Arrays.asList(new Role("ROLE_USER"), new Role("ROLE_ADMIN"))));
         assertEquals("/admin", response.getRedirectedUrl());
     }
-    @Test void userRedirectsToPersonalPage() throws Exception {
+    @Test
+    void userRedirectsToPersonalPage() throws Exception {
         SuccessUserHandler handler = new SuccessUserHandler();
         MockHttpServletResponse response = new MockHttpServletResponse();
         handler.onAuthenticationSuccess(new MockHttpServletRequest(), response,
